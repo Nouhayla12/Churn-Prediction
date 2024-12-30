@@ -2,43 +2,33 @@ from flask import Flask, request, render_template
 import numpy as np
 from keras.models import load_model
 import pickle
+import os
 
 app = Flask(__name__)
 
-# Load the trained model and scaler
 try:
+    # Load the trained model and scaler
     model = load_model("trained_model.keras")
     with open('scaler.pkl', 'rb') as file:
         scaler = pickle.load(file)
+    print("Model and scaler loaded successfully")
 except Exception as e:
-    print(f"Error loading model or scaler: {e}")
-    
+    print(f"Error loading model or scaler: {str(e)}")
+    model = None
+    scaler = None
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     prediction = None
     probability = None
     error = None
-    form_submitted = False
     
     if request.method == 'POST':
-        form_submitted = True
         try:
-            # Add debug prints
-            print("Form data:", request.form)
-            
-            # Get values from the form with validation
-            credit_score = request.form.get('credit_score')
-            if not credit_score:
-                raise ValueError("Credit score is required")
-            credit_score = float(credit_score)
-            
+            # Get values from the form
+            credit_score = float(request.form.get('credit_score', 0))
             gender = 1 if request.form.get('gender') == 'Male' else 0
-            
-            age = request.form.get('age')
-            if not age:
-                raise ValueError("Age is required")
-            age = float(age)
-            
+            age = float(request.form.get('age', 0))
             tenure = float(request.form.get('tenure', 0))
             balance = float(request.form.get('balance', 0))
             products_number = float(request.form.get('products_number', 0))
@@ -56,7 +46,9 @@ def home():
             input_data = [[credit_score, gender, age, tenure, balance, products_number, 
                           has_card, is_active, salary, geo_france, geo_germany, geo_spain]]
             
-            print("Input data:", input_data)  # Debug print
+            # Validate model and scaler
+            if model is None or scaler is None:
+                raise Exception("Model or scaler not properly loaded")
             
             # Scale the input
             scaled_data = scaler.transform(input_data)
@@ -67,13 +59,14 @@ def home():
             probability = round(float(prob) * 100, 2)
             
         except Exception as e:
-            print(f"Error during prediction: {str(e)}")  # Debug print
             error = f"Error during prediction: {str(e)}"
-            prediction = None
-            probability = None
+            print(error)
     
     return render_template('index.html', 
                          prediction=prediction, 
                          probability=probability,
-                         error=error,
-                         form_submitted=form_submitted)
+                         error=error)
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
