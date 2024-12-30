@@ -85,11 +85,18 @@
             </div>
         </form>
         
-        {% if prediction %}
-        <div class="prediction-result bg-light">
-            <h4>Prediction Result:</h4>
-            <p>The customer <strong>{{ prediction }}</strong> with {{ probability }}% probability.</p>
-        </div>
+        {% if request.method == 'POST' %}
+            {% if error %}
+            <div class="alert alert-danger prediction-result">
+                <h4>Error:</h4>
+                <p>{{ error }}</p>
+            </div>
+            {% elif prediction %}
+            <div class="prediction-result bg-light">
+                <h4>Prediction Result:</h4>
+                <p>The customer <strong>{{ prediction }}</strong> with {{ probability }}% probability.</p>
+            </div>
+            {% endif %}
         {% endif %}
     </div>
 </body>
