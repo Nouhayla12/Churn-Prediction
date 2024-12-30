@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 import numpy as np
-from tensorflow.keras.models import load_model  # Utilisation de tensorflow.keras au lieu de keras
+from keras.models import load_model
 import pickle
 
 app = Flask(__name__)
