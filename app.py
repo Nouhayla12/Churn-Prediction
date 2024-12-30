@@ -21,18 +21,18 @@ def home():
     if request.method == 'POST':
         try:
             # Get values from the form
-            credit_score = float(request.form['credit_score'])
-            gender = 1 if request.form['gender'] == 'Male' else 0
-            age = float(request.form['age'])
-            tenure = float(request.form['tenure'])
-            balance = float(request.form['balance'])
-            products_number = float(request.form['products_number'])
-            has_card = 1 if request.form['has_card'] == 'Yes' else 0
-            is_active = 1 if request.form['is_active'] == 'Yes' else 0
-            salary = float(request.form['salary'])
+            credit_score = float(request.form.get('credit_score', 0))
+            gender = 1 if request.form.get('gender') == 'Male' else 0
+            age = float(request.form.get('age', 0))
+            tenure = float(request.form.get('tenure', 0))
+            balance = float(request.form.get('balance', 0))
+            products_number = float(request.form.get('products_number', 0))
+            has_card = 1 if request.form.get('has_card') == 'Yes' else 0
+            is_active = 1 if request.form.get('is_active') == 'Yes' else 0
+            salary = float(request.form.get('salary', 0))
             
             # Handle geography one-hot encoding
-            geography = request.form['geography']
+            geography = request.form.get('geography', 'France')  # Default to France if not specified
             geo_france = 1 if geography == 'France' else 0
             geo_germany = 1 if geography == 'Germany' else 0
             geo_spain = 1 if geography == 'Spain' else 0
@@ -50,11 +50,11 @@ def home():
             probability = round(float(prob) * 100, 2)
             
         except Exception as e:
-            print(f"Error during prediction: {e}")
+            print(f"Error during prediction: {str(e)}")
             prediction = "Error in prediction"
-            probability = 0
+            probability = None
     
     return render_template('index.html', prediction=prediction, probability=probability)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
