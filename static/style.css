@@ -1,0 +1,111 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    background: white;
+    padding: 1.5rem; /* Réduire le padding pour gagner de l'espace */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 1200px; /* Largeur maximale pour les écrans larges */
+    max-height: 90vh; /* Hauteur maximale pour éviter le défilement */
+    overflow-y: auto; /* Ajouter un défilement uniquement si nécessaire */
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.75rem; /* Réduire la taille du titre */
+    margin-bottom: 1rem; /* Réduire l'espace sous le titre */
+    color: #2c3e50;
+}
+
+/* Form Styles */
+form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Trois colonnes pour les écrans larges */
+    gap: 1rem; /* Réduire l'espacement entre les éléments */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Réduire l'espacement entre le label et le champ */
+}
+
+label {
+    font-weight: 600;
+    color: #34495e;
+    font-size: 0.9rem; /* Réduire la taille des labels */
+}
+
+input, select {
+    width: 100%;
+    padding: 0.5rem; /* Réduire le padding */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.9rem; /* Réduire la taille de la police */
+    transition: border-color 0.3s ease;
+    height: 40px; /* Réduire la hauteur des champs */
+    box-sizing: border-box; /* Inclure le padding dans la hauteur */
+}
+
+input:focus, select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+button {
+    grid-column: span 3; /* Le bouton prend toute la largeur */
+    background: #3498db;
+    color: white;
+    padding: 0.5rem; /* Réduire le padding */
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem; /* Réduire la taille de la police */
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 1rem; /* Réduire l'espace au-dessus du bouton */
+    height: 40px; /* Réduire la hauteur du bouton */
+}
+
+button:hover {
+    background: #2980b9;
+}
+
+/* Result Styles */
+#result {
+    grid-column: span 3; /* Le résultat prend toute la largeur */
+    margin-top: 1rem; /* Réduire l'espace au-dessus du résultat */
+    padding: 0.75rem; /* Réduire le padding */
+    background: #ecf0f1;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #2c3e50;
+    text-align: center;
+    font-size: 0.9rem; /* Réduire la taille de la police */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    form {
+        grid-template-columns: 1fr; /* Une seule colonne pour les petits écrans */
+    }
+
+    button, #result {
+        grid-column: span 1; /* Le bouton et le résultat prennent une seule colonne */
+    }
+
+    .container {
+        max-height: none; /* Supprimer la hauteur maximale sur les petits écrans */
+    }
+}
